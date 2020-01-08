@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs')
+const Schema = mongoose.Schema;
+
 var userSchema = mongoose.Schema({
   email: {
     type: String,
@@ -10,10 +12,13 @@ var userSchema = mongoose.Schema({
     type: String,
     required: [true, "The Password field is required"]
   },
-  accountType: {
-    type: String,
+  isCompany: {
+    type: Boolean,
     required: [true, "The Account Type field is required"]
   },
+  companyName: String,
+  companyInfo: String,
+  posts: [{ type: Schema.Types.ObjectId, ref: "Post" }]
 });
 
 userSchema.pre("save", function (next) {

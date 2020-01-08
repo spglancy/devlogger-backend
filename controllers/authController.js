@@ -26,7 +26,7 @@ router.post('/login', (req, res) => {
             message: 'Wrong Email or Password',
           })
         }
-        const token = jwt.sign({ id: user._id, name: user.name }, 'asdfasdf', { expiresIn: '60 days' })
+        const token = jwt.sign({ id: user._id, name: user.name }, process.env.SECRET, { expiresIn: '60 days' })
         res.send({
           result: 'Success',
           userId: user._id,
@@ -52,7 +52,7 @@ router.post('/register', (req, res) => {
   User.findOne({ email }).then((check) => {
     if (!check) {
       user.save().then((u) => {
-        const token = jwt.sign({ id: u._id, name: u.name }, 'asdfasdf', { expiresIn: '60 days' })
+        const token = jwt.sign({ id: u._id, name: u.name }, process.env.SECRET, { expiresIn: '60 days' })
         res.send({
           result: 'Success',
           userId: u._id,
