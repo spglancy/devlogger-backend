@@ -1,11 +1,11 @@
 const dotenv = require('dotenv').config()
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const authController = require('./controllers/authController');
+const express = require('express')
+const app = express()
+const bodyParser = require('body-parser')
+const authController = require('./controllers/authController')
 const companyController = require('./controllers/companyController')
 const postController = require('./controllers/postController')
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 // Connecting to the mongoDB
 mongoose.connect(process.env.MONGOURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -22,8 +22,10 @@ app.use(bodyParser.json())
 
 // Setting application routes
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
+  res.header('Access-Control-Allow-Methods', 'POST GET')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  next()
 })
 app.use('/', authController)
 app.use('/', companyController)
