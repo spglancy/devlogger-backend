@@ -4,10 +4,10 @@ const Post = require('../models/post')
 const User = require('../models/user')
 
 router.post('/post/new', (req, res) => {
-  const { title, author, content, userId } = req.body
-  Post.create({ title, author, content, userId })
+  Post.create(req.body)
     .then(post => {
-      User.findById(userId)
+      console.log(post)
+      User.findById(req.body.userId)
         .then(user => {
           user.posts.push(post._id)
           user.markModified('posts')
