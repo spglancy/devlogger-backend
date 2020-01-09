@@ -6,7 +6,6 @@ var userSchema = mongoose.Schema({
   email: {
     type: String,
     required: [false, "The Email field is required"],
-    unique: true
   },
   password: {
     type: String,

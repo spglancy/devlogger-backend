@@ -17,4 +17,11 @@ router.post('/post/new', (req, res) => {
     })
 })
 
+router.get('/allposts', (req, res) => {
+  Post.find()
+    .then(posts => {
+      res.send(posts)
+    })
+})
+
 module.exports = router

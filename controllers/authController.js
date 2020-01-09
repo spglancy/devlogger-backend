@@ -41,7 +41,7 @@ router.post('/login', (req, res) => {
 
 router.post('/register', (req, res) => {
   const body = req.body
-  const { email, password, passwordConf } = body
+  const { email, password, passwordConf, companyName } = body
   let user = {}
   if (password === passwordConf) {
     user = new User(body)
@@ -49,23 +49,44 @@ router.post('/register', (req, res) => {
     return res.send({ message: 'Passwords do not match' })
   }
   user.email = user.email.toLowerCase()
-  User.findOne({ email }).then((check) => {
-    if (!check) {
-      user.save().then((u) => {
-        const token = jwt.sign({ id: u._id, name: u.name }, process.env.SECRET, { expiresIn: '60 days' })
-        res.send({
-          result: 'Success',
-          userId: u._id,
-          token,
+  if (email.length > 1) {
+    User.findOne({ email }).then((check) => {
+      if (!check) {
+        user.save().then((u) => {
+          const token = jwt.sign({ id: u._id, name: u.companyName }, process.env.SECRET, { expiresIn: '60 days' })
+          res.send({
+            result: 'Success',
+            userId: u._id,
+            token,
+          })
         })
-      })
-    } else {
-      res.send({
-        result: 'Unsuccessful',
-        message: 'This Email is already in use',
-      })
-    }
-  })
+      } else {
+        res.send({
+          result: 'Unsuccessful',
+          message: 'This Email is already in use',
+        })
+      }
+    })
+  } else {
+    User.findOne({ companyName }).then((check) => {
+      if (!check) {
+        user.save().then((u) => {
+          const token = jwt.sign({ id: u._id, name: u.companyName }, process.env.SECRET, { expiresIn: '60 days' })
+          res.send({
+            result: 'Success',
+            userId: u._id,
+            token,
+          })
+        })
+      } else {
+        res.send({
+          result: 'Unsuccessful',
+          message: 'This Company Name is already in use',
+        })
+      }
+    })
+  }
+
 })
 
 module.exports = router
